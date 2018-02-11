@@ -1,0 +1,3 @@
+[submodule "library/src/main/cpp/vgs-spu"]
+	path = library/src/main/cpp/vgs-spu
+	url = https://github.com/suzukiplan/vgs-spu
