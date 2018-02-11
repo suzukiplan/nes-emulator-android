@@ -8,7 +8,7 @@
 
 class AndroidAudioFairy : public AudioFairy
 {
-public: // 以下はsound_threadから参照するのでスコープを public にしている (外部からは触ってはならない)
+public:
 
 private:
 
