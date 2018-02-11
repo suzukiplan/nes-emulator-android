@@ -8,9 +8,14 @@
 class AndroidVideoFairy : public VideoFairy {
 public:
     unsigned short bitmap565[screenWidth * screenHeight];
+    bool render;
+
     AndroidVideoFairy();
+
     ~AndroidVideoFairy();
-    void dispatchRendering(const uint8_t (&nesBuffer)[screenHeight][screenWidth], const uint8_t paletteMask);
+
+    void dispatchRendering(const uint8_t (&nesBuffer)[screenHeight][screenWidth],
+                           const uint8_t paletteMask);
 };
 
 #endif /* AndroidVideoFairy_hpp */

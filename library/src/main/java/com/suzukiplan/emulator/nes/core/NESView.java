@@ -79,14 +79,14 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void load(byte[] rom) {
-        // TODO: library側にromを読み込ませる
+        Logger.d("loading rom: size=" + rom.length);
+        Emulator.loadRom(context, rom);
     }
 
     // TODO: 本当はキー入力情報を渡す
     public void tick() {
-        // TODO: 1フレーム分のCPUを進めてvramを更新
-        Canvas vramCanvas = new Canvas(vram);
-        vramCanvas.drawColor(0xff202020);
+        // 1フレーム描画されるまでCPUを回す
+        Emulator.tick(context, 0, 0, vram);
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
         if (null == holder) {

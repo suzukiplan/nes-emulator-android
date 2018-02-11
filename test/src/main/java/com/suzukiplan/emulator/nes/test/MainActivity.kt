@@ -17,11 +17,20 @@ class MainActivity : AppCompatActivity() {
         nesView = findViewById(R.id.nes_view)
         active = true
         tickThread = Thread {
+            nesView?.load(readAsset("snow-demo-by-tennessee-carmel-veilleux-pd.nes"))
             while (active) {
                 nesView?.tick()
             }
         }
         tickThread?.start()
+    }
+
+    private fun readAsset(path: String): ByteArray {
+        val inputStream = assets.open(path)
+        val fileBytes = ByteArray(inputStream.available())
+        inputStream.read(fileBytes)
+        inputStream.close()
+        return fileBytes
     }
 
     override fun onDestroy() {
