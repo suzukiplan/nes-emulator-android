@@ -1,11 +1,42 @@
 #include <jni.h>
 #include <string>
+#include "Cycloa/src/emulator/VirtualMachine.h"
+#include "AndroidVideoFairy.hpp"
+#include "AndroidAudioFairy.hpp"
+#include "AndroidGamepadFairy.hpp"
 
-extern "C"
-JNIEXPORT jstring
+class Context {
+public:
+    AndroidVideoFairy video;
+    AndroidAudioFairy audio;
+    AndroidGamepadFairy gamepad1;
+    AndroidGamepadFairy gamepad2;
+    VirtualMachine *vm;
 
-JNICALL
-Java_com_suzukiplan_emulator_nes_core_JNI_stringFromJNI(JNIEnv *env, jobject /* this */) {
+    Context() {
+        vm = new VirtualMachine(video, audio, &gamepad1, &gamepad2);
+    }
+
+    ~Context() {
+        delete vm;
+    }
+};
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_stringFromJNI(JNIEnv *env, jobject /* this */) {
     std::string hello = "Hello from C++";
     return env->NewStringUTF(hello.c_str());
+}
+
+extern "C" JNIEXPORT jlong JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_createContext(JNIEnv *env, jobject /* this */) {
+    Context *context = new Context();
+    return (jlong) context;
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_releaseContext(JNIEnv *env, jobject /* this */,
+                                                              jlong ctx) {
+    Context *context = (Context *) ctx;
+    delete context;
 }

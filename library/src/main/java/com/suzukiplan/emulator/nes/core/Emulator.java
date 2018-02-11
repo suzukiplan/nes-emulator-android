@@ -1,9 +1,13 @@
 package com.suzukiplan.emulator.nes.core;
 
 public class Emulator {
-    private final JNI jni = new JNI();
-
-    public String stringFromJNI() {
-        return jni.stringFromJNI();
+    static {
+        System.loadLibrary("nes-core");
     }
+
+    public static native String stringFromJNI();
+
+    public static native long createContext();
+
+    public static native void releaseContext(long contextId);
 }
