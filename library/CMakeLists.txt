@@ -18,6 +18,9 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/jni.cpp
+             src/main/cpp/AndroidAudioFairy.cpp
+             src/main/cpp/AndroidGamepadFairy.cpp
+             src/main/cpp/AndroidVideoFairy.cpp
              src/main/cpp/Cycloa/src/emulator/Cartridge.cpp
              src/main/cpp/Cycloa/src/emulator/file/NesFile.h
              src/main/cpp/Cycloa/src/emulator/file/NesFile.cpp
