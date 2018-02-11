@@ -22,12 +22,6 @@ public:
     }
 };
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_suzukiplan_emulator_nes_core_Emulator_stringFromJNI(JNIEnv *env, jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}
-
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_suzukiplan_emulator_nes_core_Emulator_createContext(JNIEnv *env, jobject /* this */) {
     Context *context = new Context();
