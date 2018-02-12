@@ -38,7 +38,7 @@ dependencies {
     // load rom
     nesView?.load(romByteArray)
 
-	// execute 1 frame
+    // execute 1 frame
     nesView?.tick()
 ```
 
