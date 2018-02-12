@@ -12,7 +12,7 @@ The NES emulator implementation for Android using [Cycloa](https://github.com/le
 
 ```
 dependencies {
-    implementation 'com.suzukiplan:nes-emulator-android:1.1.0'
+    implementation 'com.suzukiplan:nes-emulator-android:1.1.1'
 }
 ```
 

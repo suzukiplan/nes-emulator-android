@@ -205,7 +205,7 @@ void AndroidAudioFairy::callback(SLAndroidSimpleBufferQueueItf bq, void *c) {
         context->lock();
         if (context->isEnded()) break;
         copiedSize += (SLuint32) context->popAudio(((int16_t *) context->buffer) + copiedSize,
-                                                   sizeof(context->buffer) / 2 - copiedSize * 2);
+                                                   sizeof(context->buffer) / 2 - copiedSize);
     }
     if (!context->isEnded()) {
         (*bq)->Enqueue(bq, context->buffer, (SLuint32) copiedSize * 2);
