@@ -16,6 +16,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Logger.enabled = true
+
+        // key input procedure
+        findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> keyP1.up = pushing }
+        findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> keyP1.down = pushing }
+        findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> keyP1.left = pushing }
+        findViewById<PushableTextView>(R.id.right).onPushChanged = { pushing -> keyP1.right = pushing }
+        findViewById<PushableTextView>(R.id.a).onPushChanged = { pushing -> keyP1.a = pushing }
+        findViewById<PushableTextView>(R.id.b).onPushChanged = { pushing -> keyP1.b = pushing }
+        findViewById<PushableTextView>(R.id.select).onPushChanged = { pushing -> keyP1.select = pushing }
+        findViewById<PushableTextView>(R.id.start).onPushChanged = { pushing -> keyP1.start = pushing }
+
+        // start emulator
         nesView = findViewById(R.id.nes_view)
         active = true
         tickThread = Thread {

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Test</string>
+    <string name="start">START</string>
+    <string name="select">SELECT</string>
+    <string name="b">B</string>
+    <string name="a">A</string>
+    <string name="right">RIGHT</string>
+    <string name="left">LEFT</string>
+    <string name="down">DOWN</string>
+    <string name="up">UP</string>
 </resources>
