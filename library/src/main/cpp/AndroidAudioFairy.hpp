@@ -18,16 +18,21 @@ struct SL {
     SLAndroidSimpleBufferQueueItf slBufQ;
 };
 
-class AndroidAudioFairy : public AudioFairy
-{
+class AndroidAudioFairy : public AudioFairy {
 public:
     AndroidAudioFairy(int sampling, int bit, int channel);
+
     ~AndroidAudioFairy();
-    int16_t buffer[65536];
+
+    int16_t buffer[4096];
     char emptyBuffer[1024];
+
     void lock();
+
     void unlock();
+
     static void callback(SLAndroidSimpleBufferQueueItf bq, void *c);
+
     bool isEnded() {
         return NULL == sl.slBufQ;
     }
@@ -38,7 +43,9 @@ private:
     int sampling;
     int bit;
     SLuint32 channel;
+
     int init_sl();
+
     int init_sl2();
 };
 
