@@ -1,0 +1,3 @@
+[submodule "library/src/main/cpp/Cycloa"]
+	path = library/src/main/cpp/Cycloa
+	url = https://github.com/ledyba/Cycloa
