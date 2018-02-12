@@ -6,6 +6,11 @@ The NES emulator implementation for Android using [Cycloa](https://github.com/le
 
 ![screenshot](screenshot.png)
 
+## How to build
+
+Please open this project on Android Studio 3.0 or later,
+then you can build with choose `test` module.
+
 ## License
 
 - NES Emulator for Android: [GPLv3](LICENSE.txt)
