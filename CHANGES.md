@@ -1,5 +1,9 @@
 # CHANGES
 
+## Version 1.1.3
+
+- update license info in bintray
+
 ## Version 1.1.2
 
 - bugfix: correct copy sound buffer procedure
