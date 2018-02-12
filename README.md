@@ -34,10 +34,10 @@ dependencies {
     val nesView = findViewById(R.id.nes_view)
 
     // load rom
-	nesView?.load(romByteArray)
+    nesView?.load(romByteArray)
 
 	// execute 1 frame
-	nesView?.tick()
+    nesView?.tick()
 ```
 
 > See the [example](test/src/main/java/com/suzukiplan/emulator/nes/test/MainActivity.kt)
