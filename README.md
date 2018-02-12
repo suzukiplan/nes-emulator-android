@@ -18,7 +18,7 @@ dependencies {
 }
 ```
 
-> - now available on bintray
+> - now available on bintray: https://dl.bintray.com/suzukiplan/maven/com/suzukiplan/nes-emulator-android/
 > - available on jcenter() soon
 
 ### (2) layout.xml
