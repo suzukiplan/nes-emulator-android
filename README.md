@@ -6,6 +6,42 @@ The NES emulator implementation for Android using [Cycloa](https://github.com/le
 
 ![screenshot](screenshot.png)
 
+## How to use on Your Project
+
+### (1) build.gradle
+
+```
+dependencies {
+  implementation 'com.suzukiplan:nes-emulator-android:1.0.0'
+}
+```
+
+### (2) layout.xml
+
+```xml
+    <com.suzukiplan.emulator.nes.core.NESView
+        android:id="@+id/nes_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+```
+
+> See the [example](test/src/main/res/layout/activity_main.xml)
+
+### (3) Java/Kotlin code
+
+```kotlin
+    // find view
+    val nesView = findViewById(R.id.nes_view)
+
+    // load rom
+	nesView?.load(romByteArray)
+
+	// execute 1 frame
+	nesView?.tick()
+```
+
+> See the [example](test/src/main/java/com/suzukiplan/emulator/nes/test/MainActivity.kt)
+
 ## How to build
 
 ### (1) Copy on your PC
