@@ -18,7 +18,8 @@ dependencies {
 }
 ```
 
-> available on jcenter()
+> - now on available bintray
+> - available on jcenter() soon
 
 ### (2) layout.xml
 
