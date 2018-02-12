@@ -16,6 +16,8 @@ dependencies {
 }
 ```
 
+> available on jcenter()
+
 ### (2) layout.xml
 
 ```xml
