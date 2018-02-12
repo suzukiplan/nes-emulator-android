@@ -1,3 +1,6 @@
 [submodule "library/src/main/cpp/vgs-spu"]
 	path = library/src/main/cpp/vgs-spu
 	url = https://github.com/suzukiplan/vgs-spu
+[submodule "library/src/main/cpp/buffer-queue"]
+	path = library/src/main/cpp/buffer-queue
+	url = https://github.com/suzukiplan/buffer-queue.git

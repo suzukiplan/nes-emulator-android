@@ -17,7 +17,7 @@ public:
     uint8_t *rom;
     uint32_t romSize;
 
-    Context() {
+    Context() : audio(AndroidAudioFairy(44100, 16, 1)) {
         vm = new VirtualMachine(video, audio, &gamepad1, &gamepad2);
         rom = NULL;
         romSize = 0;
@@ -81,7 +81,11 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
         context->gamepad1.code = key1;
         context->gamepad2.code = key2;
         context->video.render = false;
+
+        context->audio.lock();
         while (!context->video.render) context->vm->run();
+        context->audio.unlock();
+
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
         memcpy(pixels, context->video.bitmap565, sizeof(context->video.bitmap565));
