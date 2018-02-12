@@ -21,10 +21,6 @@ add_library( # Sets the name of the library.
              src/main/cpp/AndroidAudioFairy.cpp
              src/main/cpp/AndroidGamepadFairy.cpp
              src/main/cpp/AndroidVideoFairy.cpp
-             src/main/cpp/buffer-queue/src/BufferQueue.cpp
-             src/main/cpp/buffer-queue/src/BufferQueue.h
-             src/main/cpp/vgs-spu/src/vgsspu.h
-             src/main/cpp/vgs-spu/src/vgsspu_sles.c
              src/main/cpp/Cycloa/src/emulator/Cartridge.cpp
              src/main/cpp/Cycloa/src/emulator/file/NesFile.h
              src/main/cpp/Cycloa/src/emulator/file/NesFile.cpp
