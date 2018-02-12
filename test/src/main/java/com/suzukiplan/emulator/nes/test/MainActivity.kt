@@ -3,12 +3,14 @@ package com.suzukiplan.emulator.nes.test
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.suzukiplan.emulator.nes.core.Logger
+import com.suzukiplan.emulator.nes.core.NESKey
 import com.suzukiplan.emulator.nes.core.NESView
 
 class MainActivity : AppCompatActivity() {
     private var nesView: NESView? = null
     private var tickThread: Thread? = null
     private var active = false
+    private val keyP1 = NESKey()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         tickThread = Thread {
             nesView?.load(readAsset("snow-demo-by-tennessee-carmel-veilleux-pd.nes"))
             while (active) {
-                nesView?.tick()
+                nesView?.tick(keyP1.code, 0)
             }
         }
         tickThread?.start()
