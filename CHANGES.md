@@ -1,5 +1,9 @@
 # CHANGES
 
+## Version 1.1.2
+
+- bugfix: correct copy sound buffer procedure
+
 ## Version 1.1.1
 
 - bugfix: invalid copy size (it does not become obvious)
