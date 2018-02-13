@@ -8,4 +8,7 @@
     <string name="left">LEFT</string>
     <string name="down">DOWN</string>
     <string name="up">UP</string>
+    <string name="reset">RESET</string>
+    <string name="capture">CAPTURE</string>
+    <string name="screen_capture">Screen capture</string>
 </resources>

@@ -1,5 +1,10 @@
 # CHANGES
 
+## Version 1.2.2
+
+- make null safe NESView methods
+- bugfix: `NESView#capture` often break
+
 ## Version 1.2.1
 
 - added NESView.capture method

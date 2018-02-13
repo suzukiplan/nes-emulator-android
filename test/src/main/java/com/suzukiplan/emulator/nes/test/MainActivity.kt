@@ -1,8 +1,12 @@
 package com.suzukiplan.emulator.nes.test
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Toast
 import com.suzukiplan.emulator.nes.core.Logger
 import com.suzukiplan.emulator.nes.core.NESKey
@@ -21,6 +25,14 @@ class MainActivity : AppCompatActivity() {
         Logger.enabled = true
 
         // key input procedure
+        findViewById<View>(R.id.capture).setOnClickListener {
+            val captureBitmap = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565)
+            val captureCanvas = Canvas(captureBitmap)
+            val rect = Rect(0, 0, 256, 240)
+            nesView?.capture(captureCanvas, rect)
+            CaptureDialog().show(supportFragmentManager, captureBitmap)
+        }
+        findViewById<View>(R.id.reset).setOnClickListener { nesView?.reset() }
         findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> keyP1.up = pushing }
         findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> keyP1.down = pushing }
         findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> keyP1.left = pushing }
