@@ -1,7 +1,9 @@
 package com.suzukiplan.emulator.nes.test
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.suzukiplan.emulator.nes.core.Logger
 import com.suzukiplan.emulator.nes.core.NESKey
 import com.suzukiplan.emulator.nes.core.NESView
@@ -12,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     private var active = false
     private val keyP1 = NESKey()
 
+    @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,7 +34,10 @@ class MainActivity : AppCompatActivity() {
         nesView = findViewById(R.id.nes_view)
         active = true
         tickThread = Thread {
-            nesView?.load(readAsset("snow-demo-by-tennessee-carmel-veilleux-pd.nes"))
+            if (true != nesView?.load(readAsset("snow-demo-by-tennessee-carmel-veilleux-pd.nes"))) {
+                runOnUiThread { Toast.makeText(this, "Load failed!", Toast.LENGTH_LONG) }
+                return@Thread
+            }
             while (active) {
                 nesView?.tick(keyP1.code, 0)
             }
