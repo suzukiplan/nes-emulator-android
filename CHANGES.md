@@ -1,5 +1,10 @@
 # CHANGES
 
+## Version 1.2.1
+
+- added NESView.capture method
+- added NESView.reset method
+
 ## Version 1.2.0
 
 - bugfix: buffer overwrite every sound buffer copy
