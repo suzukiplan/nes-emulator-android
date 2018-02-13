@@ -11,7 +11,7 @@ final class Emulator {
 
     public static native void releaseContext(long contextId);
 
-    public static native void loadRom(long contextId, byte[] rom);
+    public static native boolean loadRom(long contextId, byte[] rom);
 
     public static native void tick(long contextId, int key1, int key2, Bitmap vram);
 }

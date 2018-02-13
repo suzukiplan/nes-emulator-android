@@ -32,7 +32,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.suzukiplan:nes-emulator-android:1.1.3'
+    implementation 'com.suzukiplan:nes-emulator-android:1.2.0'
 }
 ```
 

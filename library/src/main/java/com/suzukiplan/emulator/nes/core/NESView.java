@@ -78,9 +78,9 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void load(byte[] rom) {
+    public boolean load(byte[] rom) {
         Logger.d("loading rom: size=" + rom.length);
-        Emulator.loadRom(context, rom);
+        return Emulator.loadRom(context, rom);
     }
 
     public void tick(int keyCodeP1, int keyCodeP2) {
