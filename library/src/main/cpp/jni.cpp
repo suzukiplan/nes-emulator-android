@@ -45,12 +45,13 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_releaseContext(JNIEnv *env,
 }
 
 extern "C"
-JNIEXPORT void JNICALL
+JNIEXPORT jboolean JNICALL
 Java_com_suzukiplan_emulator_nes_core_Emulator_loadRom(JNIEnv *env,
                                                        jobject /* this */,
                                                        jlong ctx,
                                                        jbyteArray rom_) {
     Context *context = (Context *) ctx;
+    jboolean result = JNI_FALSE;
     if (context->rom) free(context->rom);
     context->rom = NULL;
     context->romSize = 0;
@@ -63,9 +64,11 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_loadRom(JNIEnv *env,
             context->romSize = (uint32_t) size;
             context->vm->loadCartridge(context->rom, context->romSize);
             context->vm->sendHardReset();
+            result = JNI_TRUE;
         }
         env->ReleaseByteArrayElements(rom_, rom, 0);
     }
+    return result;
 }
 
 extern "C"
