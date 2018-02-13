@@ -106,6 +106,10 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         holder.unlockCanvasAndPost(canvas);
     }
 
+    public void reset() {
+        Emulator.reset(context);
+    }
+
     public void capture(Canvas canvas, Rect rect) {
         canvas.drawBitmap(vram, vramRect, rect, paint);
     }

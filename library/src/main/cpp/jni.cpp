@@ -100,3 +100,12 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
         AndroidBitmap_unlockPixels(env, bitmap);
     }
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_reset(JNIEnv *env,
+                                                     jclass type,
+                                                     jlong ctx) {
+    Context *context = (Context *) ctx;
+    context->vm->sendHardReset();
+}
