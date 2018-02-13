@@ -29,6 +29,22 @@
             android:textColor="@color/colorPrimary"
             android:textSize="14dp"
             tools:ignore="ButtonStyle" />
+
+        <com.suzukiplan.emulator.nes.test.PushableTextView
+            android:id="@+id/capture"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_conrder_4dp_primary"
+            android:gravity="center"
+            android:padding="4dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:text="@string/capture"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14dp"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
     <com.suzukiplan.emulator.nes.core.NESView
