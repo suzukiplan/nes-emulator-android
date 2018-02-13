@@ -8,4 +8,5 @@
     <string name="left">LEFT</string>
     <string name="down">DOWN</string>
     <string name="up">UP</string>
+    <string name="reset">RESET</string>
 </resources>

@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         Logger.enabled = true
 
         // key input procedure
+        findViewById<PushableTextView>(R.id.reset).setOnClickListener { nesView?.reset() }
         findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> keyP1.up = pushing }
         findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> keyP1.down = pushing }
         findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> keyP1.left = pushing }
