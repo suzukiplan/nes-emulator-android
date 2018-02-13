@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap vram = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565);
     private final Rect vramRect = new Rect(0, 0, 256, 240);
+    private final Object locker = new Object();
     private Rect viewRect = null;
     private final Paint paint = new Paint();
     private Long context = null;
@@ -87,7 +88,9 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     public void tick(int keyCodeP1, int keyCodeP2) {
         if (null == context) return;
         // 1フレーム描画されるまでCPUを回す
-        Emulator.tick(context, keyCodeP1, keyCodeP2, vram);
+        synchronized (locker) {
+            Emulator.tick(context, keyCodeP1, keyCodeP2, vram);
+        }
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
         if (null == holder) {
@@ -114,6 +117,8 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void capture(Canvas canvas, Rect rect) {
-        canvas.drawBitmap(vram, vramRect, rect, paint);
+        synchronized (locker) {
+            canvas.drawBitmap(vram, vramRect, rect, paint);
+        }
     }
 }
