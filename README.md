@@ -4,7 +4,7 @@
 
 The NES emulator implementation for Android using [Cycloa](https://github.com/ledyba/Cycloa).
 
-![screenshot](screenshot.png)
+![screenshot](screen-shot.png)
 
 ## How to use on Your Project
 
