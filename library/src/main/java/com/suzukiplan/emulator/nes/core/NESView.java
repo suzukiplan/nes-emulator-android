@@ -15,7 +15,6 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private Rect viewRect = null;
     private final Paint paint = new Paint();
     private Long context = null;
-    private int backgroundColor = 0;
 
     public NESView(Context context) {
         super(context);
@@ -66,12 +65,6 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void setBackgroundColor(int color) {
-        backgroundColor = color;
-        super.setBackgroundColor(color);
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         destroy();
         super.onDetachedFromWindow();
@@ -106,7 +99,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
             Logger.w("cannot lock the holder-canvas");
             return;
         }
-        canvas.drawColor(backgroundColor);
+        canvas.drawColor(0xff000000);
         if (null == viewRect) {
             Logger.w("surface has not initialized");
             return;
