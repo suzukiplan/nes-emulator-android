@@ -12,24 +12,6 @@ __IMPORTANT: Your Project's license must to GPLv3 if use it. (confirm the LICENS
 
 ### (1) build.gradle
 
-#### all projects
-
-```
-allprojects {
-    repositories {
-        google()
-        jcenter()
-
-        // jcenterに登録されるまでの間, 暫定的に以下を定義する必要があります
-        maven {
-            url = 'https://dl.bintray.com/suzukiplan/maven/'
-        }
-    }
-}
-```
-
-#### target project
-
 ```
 dependencies {
     implementation 'com.suzukiplan:nes-emulator-android:1.2.0'
