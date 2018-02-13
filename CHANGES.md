@@ -1,5 +1,10 @@
 # CHANGES
 
+## Version 1.2.0
+
+- bugfix: buffer overwrite every sound buffer copy
+- change `NESView#load` return code to `boolean` from `void`
+
 ## Version 1.1.3
 
 - update license info in bintray
