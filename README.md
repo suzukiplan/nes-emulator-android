@@ -8,7 +8,7 @@ The NES emulator implementation for Android using [Cycloa](https://github.com/le
 
 ## How to use on Your Project
 
-__IMPORTANT: Your Project's license must to GPLv3 if use it. (confirm the LICENSE section)__
+__IMPORTANT: Your Project's license must to GPLv3 or compatible if use it. (confirm the LICENSE section)__
 
 ### (1) build.gradle
 
