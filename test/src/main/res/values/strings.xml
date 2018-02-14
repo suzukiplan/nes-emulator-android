@@ -11,4 +11,12 @@
     <string name="reset">RESET</string>
     <string name="capture">CAPTURE</string>
     <string name="screen_capture">Screen capture</string>
+    <string name="x1">x1</string>
+    <string name="x2">x2</string>
+    <string name="x3">x3</string>
+    <string name="x4">x4</string>
+    <string name="x5">x5</string>
+    <string name="x6">x6</string>
+    <string name="x7">x7</string>
+    <string name="x8">x8</string>
 </resources>

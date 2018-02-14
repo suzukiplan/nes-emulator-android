@@ -14,9 +14,11 @@ __IMPORTANT: Your Project's license must to GPLv3 or compatible if use it. (conf
 
 ```
 dependencies {
-    implementation 'com.suzukiplan:nes-emulator-android:1.2.2'
+    implementation 'com.suzukiplan:nes-emulator-android:1.2.3'
 }
 ```
+
+> You can check the available version in the [jcenter](http://jcenter.bintray.com/com/suzukiplan/nes-emulator-android/)
 
 ### (2) layout.xml
 

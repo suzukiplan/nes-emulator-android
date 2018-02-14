@@ -86,6 +86,8 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
         context->video.render = false;
 
         context->audio.lock();
+        context->audio.skip = 0;
+        context->video.skip = false;
         while (!context->video.render) context->vm->run();
         context->audio.unlock();
 
@@ -93,6 +95,55 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
         memcpy(pixels, context->video.bitmap565, sizeof(context->video.bitmap565));
         AndroidBitmap_unlockPixels(env, bitmap);
+    } else {
+        void *pixels;
+        if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
+        memset(pixels, 0x00, sizeof(context->video.bitmap565));
+        AndroidBitmap_unlockPixels(env, bitmap);
+    }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_multipleTicks(JNIEnv *env,
+                                                             jobject /* this */,
+                                                             jlong ctx,
+                                                             jintArray keys1_,
+                                                             jintArray keys2_,
+                                                             jobject bitmap) {
+    Context *context = (Context *) ctx;
+    if (context->rom) {
+        int size = (int) env->GetArrayLength(keys1_);
+        if (size != (uint32_t) env->GetArrayLength(keys2_) || size < 1) {
+            return;
+        }
+        jint *keys1 = env->GetIntArrayElements(keys1_, NULL);
+        jint *keys2 = env->GetIntArrayElements(keys2_, NULL);
+
+        context->audio.lock();
+        int skip = size - 1;
+        context->audio.skip = skip;
+        context->video.skip = true;
+        for (int i = 0; i < skip; i++) {
+            context->gamepad1.code = keys1[i];
+            context->gamepad2.code = keys2[i];
+            context->video.render = false;
+            while (!context->video.render) context->vm->run();
+        }
+        context->video.skip = false;
+        context->gamepad1.code = keys1[skip];
+        context->gamepad2.code = keys2[skip];
+        context->video.render = false;
+        while (!context->video.render) context->vm->run();
+        context->audio.unlock();
+
+        void *pixels;
+        if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
+        memcpy(pixels, context->video.bitmap565, sizeof(context->video.bitmap565));
+        AndroidBitmap_unlockPixels(env, bitmap);
+
+        env->ReleaseIntArrayElements(keys1_, keys1, 0);
+        env->ReleaseIntArrayElements(keys2_, keys2, 0);
     } else {
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;

@@ -111,6 +111,32 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         holder.unlockCanvasAndPost(canvas);
     }
 
+    public void ticks(int[] keyCodeP1, int[] keyCodeP2) {
+        if (null == context) return;
+        // nフレーム描画されるまでCPUを回す
+        synchronized (locker) {
+            Emulator.multipleTicks(context, keyCodeP1, keyCodeP2, vram);
+        }
+        // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
+        SurfaceHolder holder = getHolder();
+        if (null == holder) {
+            Logger.w("cannot get the holder");
+            return;
+        }
+        Canvas canvas = holder.lockCanvas();
+        if (null == canvas) {
+            Logger.w("cannot lock the holder-canvas");
+            return;
+        }
+        canvas.drawColor(0xff000000);
+        if (null == viewRect) {
+            Logger.w("surface has not initialized");
+            return;
+        }
+        canvas.drawBitmap(vram, vramRect, viewRect, paint);
+        holder.unlockCanvasAndPost(canvas);
+    }
+
     public void reset() {
         if (null == context) return;
         Emulator.reset(context);

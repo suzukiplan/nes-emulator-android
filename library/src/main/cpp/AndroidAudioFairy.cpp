@@ -6,6 +6,7 @@ AndroidAudioFairy::AndroidAudioFairy(int sampling, int bit, int channel) {
     this->sampling = sampling;
     this->bit = bit;
     this->channel = (SLuint32) channel;
+    skip = 0;
     init_sl();
 }
 
@@ -204,7 +205,15 @@ void AndroidAudioFairy::callback(SLAndroidSimpleBufferQueueItf bq, void *c) {
         for (; copiedSize < bufferLength; copiedSize++) {
             context->buffer[copiedSize] = fill;
         }
-        (*bq)->Enqueue(bq, context->buffer, (SLuint32) copiedSize * 2);
+        if (context->skip) {
+            SLuint32 c = 0;
+            for (int i = 0; i < copiedSize; i += context->skip + 1, c++) {
+                context->skipBuffer[c] = context->buffer[i];
+            }
+            (*bq)->Enqueue(bq, context->skipBuffer, c * 2);
+        } else {
+            (*bq)->Enqueue(bq, context->buffer, (SLuint32) copiedSize * 2);
+        }
     }
     context->unlock();
 }
