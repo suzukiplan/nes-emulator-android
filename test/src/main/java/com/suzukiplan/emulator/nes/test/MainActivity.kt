@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var nesView: NESView? = null
     private var tickThread: Thread? = null
     private var active = false
-    private val keyP1 = NESKey()
+    private val key = NESKey()
     private var speed = 1
 
     @SuppressLint("ShowToast")
@@ -42,14 +42,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.x6).setOnClickListener { speed = 6 }
         findViewById<View>(R.id.x7).setOnClickListener { speed = 7 }
         findViewById<View>(R.id.x8).setOnClickListener { speed = 8 }
-        findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> keyP1.up = pushing }
-        findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> keyP1.down = pushing }
-        findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> keyP1.left = pushing }
-        findViewById<PushableTextView>(R.id.right).onPushChanged = { pushing -> keyP1.right = pushing }
-        findViewById<PushableTextView>(R.id.a).onPushChanged = { pushing -> keyP1.a = pushing }
-        findViewById<PushableTextView>(R.id.b).onPushChanged = { pushing -> keyP1.b = pushing }
-        findViewById<PushableTextView>(R.id.select).onPushChanged = { pushing -> keyP1.select = pushing }
-        findViewById<PushableTextView>(R.id.start).onPushChanged = { pushing -> keyP1.start = pushing }
+        findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> key.player1.up = pushing }
+        findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> key.player1.down = pushing }
+        findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> key.player1.left = pushing }
+        findViewById<PushableTextView>(R.id.right).onPushChanged = { pushing -> key.player1.right = pushing }
+        findViewById<PushableTextView>(R.id.a).onPushChanged = { pushing -> key.player1.a = pushing }
+        findViewById<PushableTextView>(R.id.b).onPushChanged = { pushing -> key.player1.b = pushing }
+        findViewById<PushableTextView>(R.id.select).onPushChanged = { pushing -> key.player1.select = pushing }
+        findViewById<PushableTextView>(R.id.start).onPushChanged = { pushing -> key.player1.start = pushing }
 
         // start emulator
         nesView = findViewById(R.id.nes_view)
@@ -62,12 +62,11 @@ class MainActivity : AppCompatActivity() {
             while (active) {
                 val speed = this.speed
                 if (1 == speed) {
-                    nesView?.tick(keyP1.code, 0)
+                    nesView?.tick(key.code)
                 } else {
-                    val code = keyP1.code
-                    val codes1 = IntArray(speed, { _ -> code })
-                    val codes2 = IntArray(speed, { _ -> 0 })
-                    nesView?.ticks(codes1, codes2)
+                    val code = key.code
+                    val codes = IntArray(speed, { _ -> code })
+                    nesView?.ticks(codes)
                 }
             }
         }
