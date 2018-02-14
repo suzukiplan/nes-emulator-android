@@ -9,6 +9,7 @@ class AndroidVideoFairy : public VideoFairy {
 public:
     unsigned short bitmap565[screenWidth * screenHeight];
     bool render;
+    bool skip;
 
     AndroidVideoFairy();
 

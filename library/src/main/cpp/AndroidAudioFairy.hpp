@@ -26,6 +26,7 @@ public:
 
     int16_t buffer[4096];
     char emptyBuffer[1024];
+    int skip;
 
     void lock();
 

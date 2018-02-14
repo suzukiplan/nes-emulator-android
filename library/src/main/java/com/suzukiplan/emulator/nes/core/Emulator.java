@@ -15,5 +15,7 @@ final class Emulator {
 
     public static native void tick(long contextId, int key1, int key2, Bitmap vram);
 
+    public static native void multipleTicks(long contextId, int[] key1, int[] key2, Bitmap vram);
+
     public static native void reset(long contextId);
 }

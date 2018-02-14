@@ -12,6 +12,7 @@ static const unsigned short _nesRgb565[64] = {
 
 AndroidVideoFairy::AndroidVideoFairy() {
     memset(bitmap565, 0, sizeof(bitmap565));
+    skip = false;
 }
 
 AndroidVideoFairy::~AndroidVideoFairy() {
@@ -19,10 +20,12 @@ AndroidVideoFairy::~AndroidVideoFairy() {
 
 void AndroidVideoFairy::dispatchRendering(const uint8_t (&nesBuffer)[screenHeight][screenWidth],
                                           const uint8_t paletteMask) {
-    int ptr = 0;
-    for (int y = 0; y < screenHeight; y++) {
-        for (int x = 0; x < screenWidth; x++) {
-            bitmap565[ptr++] = _nesRgb565[nesBuffer[y][x] & paletteMask];
+    if (!skip) {
+        int ptr = 0;
+        for (int y = 0; y < screenHeight; y++) {
+            for (int x = 0; x < screenWidth; x++) {
+                bitmap565[ptr++] = _nesRgb565[nesBuffer[y][x] & paletteMask];
+            }
         }
     }
     render = true;
