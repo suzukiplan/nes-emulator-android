@@ -25,6 +25,7 @@ public:
     ~AndroidAudioFairy();
 
     int16_t buffer[4096];
+    int16_t skipBuffer[2048];
     char emptyBuffer[1024];
     int skip;
 

@@ -202,10 +202,18 @@ void AndroidAudioFairy::callback(SLAndroidSimpleBufferQueueItf bq, void *c) {
         int bufferLength = (int) sizeof(context->buffer) / 2;
         SLuint32 copiedSize = (SLuint32) context->popAudio(context->buffer, bufferLength);
         const int16_t fill = copiedSize > 0 ? context->buffer[copiedSize - 1] : (int16_t) 0;
-        for (; copiedSize < bufferLength; copiedSize+= context->skip + 1) {
+        for (; copiedSize < bufferLength; copiedSize++) {
             context->buffer[copiedSize] = fill;
         }
-        (*bq)->Enqueue(bq, context->buffer, (SLuint32) copiedSize * 2);
+        if (context->skip) {
+            SLuint32 c = 0;
+            for (int i = 0; i < copiedSize; i += context->skip + 1, c++) {
+                context->skipBuffer[c] = context->buffer[i];
+            }
+            (*bq)->Enqueue(bq, context->skipBuffer, c * 2);
+        } else {
+            (*bq)->Enqueue(bq, context->buffer, (SLuint32) copiedSize * 2);
+        }
     }
     context->unlock();
 }
