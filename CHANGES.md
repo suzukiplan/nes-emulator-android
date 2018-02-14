@@ -1,5 +1,9 @@
 # CHANGES
 
+## Version 1.3.0 (destructive)
+
+- changed the specification of key code
+
 ## Version 1.2.3
 
 - added: `NESView#multipleTicks`

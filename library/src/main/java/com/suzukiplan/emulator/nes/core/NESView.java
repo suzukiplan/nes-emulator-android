@@ -85,11 +85,11 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         return Emulator.loadRom(context, rom);
     }
 
-    public void tick(int keyCodeP1, int keyCodeP2) {
+    public void tick(int keyCode) {
         if (null == context) return;
         // 1フレーム描画されるまでCPUを回す
         synchronized (locker) {
-            Emulator.tick(context, keyCodeP1, keyCodeP2, vram);
+            Emulator.tick(context, keyCode, vram);
         }
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
@@ -111,11 +111,11 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         holder.unlockCanvasAndPost(canvas);
     }
 
-    public void ticks(int[] keyCodeP1, int[] keyCodeP2) {
+    public void ticks(int[] keyCodes) {
         if (null == context) return;
         // nフレーム描画されるまでCPUを回す
         synchronized (locker) {
-            Emulator.multipleTicks(context, keyCodeP1, keyCodeP2, vram);
+            Emulator.multipleTicks(context, keyCodes, vram);
         }
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();

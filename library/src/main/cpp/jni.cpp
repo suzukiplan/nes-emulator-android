@@ -76,13 +76,12 @@ JNIEXPORT void JNICALL
 Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
                                                     jobject /* this */,
                                                     jlong ctx,
-                                                    jint key1,
-                                                    jint key2,
+                                                    jint key,
                                                     jobject bitmap) {
     Context *context = (Context *) ctx;
     if (context->rom) {
-        context->gamepad1.code = key1;
-        context->gamepad2.code = key2;
+        context->gamepad1.code = key & 0xff;
+        context->gamepad2.code = (key & 0xff00) >> 8;
         context->video.render = false;
 
         context->audio.lock();
@@ -108,31 +107,29 @@ JNIEXPORT void JNICALL
 Java_com_suzukiplan_emulator_nes_core_Emulator_multipleTicks(JNIEnv *env,
                                                              jobject /* this */,
                                                              jlong ctx,
-                                                             jintArray keys1_,
-                                                             jintArray keys2_,
+                                                             jintArray keys_,
                                                              jobject bitmap) {
     Context *context = (Context *) ctx;
     if (context->rom) {
-        int size = (int) env->GetArrayLength(keys1_);
-        if (size != (uint32_t) env->GetArrayLength(keys2_) || size < 1) {
+        int size = (int) env->GetArrayLength(keys_);
+        if (size < 1) {
             return;
         }
-        jint *keys1 = env->GetIntArrayElements(keys1_, NULL);
-        jint *keys2 = env->GetIntArrayElements(keys2_, NULL);
+        jint *keys = env->GetIntArrayElements(keys_, NULL);
 
         context->audio.lock();
         int skip = size - 1;
         context->audio.skip = skip;
         context->video.skip = true;
         for (int i = 0; i < skip; i++) {
-            context->gamepad1.code = keys1[i];
-            context->gamepad2.code = keys2[i];
+            context->gamepad1.code = keys[i] & 0xff;
+            context->gamepad2.code = (keys[i] & 0xff00) >> 8;
             context->video.render = false;
             while (!context->video.render) context->vm->run();
         }
         context->video.skip = false;
-        context->gamepad1.code = keys1[skip];
-        context->gamepad2.code = keys2[skip];
+        context->gamepad1.code = keys[skip] & 0xff;
+        context->gamepad2.code = (keys[skip] & 0xff00) >> 8;
         context->video.render = false;
         while (!context->video.render) context->vm->run();
         context->audio.unlock();
@@ -142,8 +139,7 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_multipleTicks(JNIEnv *env,
         memcpy(pixels, context->video.bitmap565, sizeof(context->video.bitmap565));
         AndroidBitmap_unlockPixels(env, bitmap);
 
-        env->ReleaseIntArrayElements(keys1_, keys1, 0);
-        env->ReleaseIntArrayElements(keys2_, keys2, 0);
+        env->ReleaseIntArrayElements(keys_, keys, 0);
     } else {
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;

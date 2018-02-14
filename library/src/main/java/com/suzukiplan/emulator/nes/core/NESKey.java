@@ -9,25 +9,37 @@ public class NESKey {
     private static final int MASK_DOWN = 32;
     private static final int MASK_LEFT = 64;
     private static final int MASK_RIGHT = 128;
+    public final Player player1 = new Player();
+    public final Player player2 = new Player();
 
-    public boolean up = false;
-    public boolean down = false;
-    public boolean left = false;
-    public boolean right = false;
-    public boolean a = false;
-    public boolean b = false;
-    public boolean select = false;
-    public boolean start = false;
+    public static class Player {
+        public boolean up = false;
+        public boolean down = false;
+        public boolean left = false;
+        public boolean right = false;
+        public boolean a = false;
+        public boolean b = false;
+        public boolean select = false;
+        public boolean start = false;
+    }
 
     public int getCode() {
-        int code = up ? MASK_UP : 0;
-        code += down ? MASK_DOWN : 0;
-        code += left ? MASK_LEFT : 0;
-        code += right ? MASK_RIGHT : 0;
-        code += a ? MASK_A : 0;
-        code += b ? MASK_B : 0;
-        code += select ? MASK_SELECT : 0;
-        code += start ? MASK_START : 0;
-        return code;
+        int code1 = player1.up ? MASK_UP : 0;
+        code1 += player1.down ? MASK_DOWN : 0;
+        code1 += player1.left ? MASK_LEFT : 0;
+        code1 += player1.right ? MASK_RIGHT : 0;
+        code1 += player1.a ? MASK_A : 0;
+        code1 += player1.b ? MASK_B : 0;
+        code1 += player1.select ? MASK_SELECT : 0;
+        code1 += player1.start ? MASK_START : 0;
+        int code2 = player2.up ? MASK_UP : 0;
+        code2 += player2.down ? MASK_DOWN : 0;
+        code2 += player2.left ? MASK_LEFT : 0;
+        code2 += player2.right ? MASK_RIGHT : 0;
+        code2 += player2.a ? MASK_A : 0;
+        code2 += player2.b ? MASK_B : 0;
+        code2 += player2.select ? MASK_SELECT : 0;
+        code2 += player2.start ? MASK_START : 0;
+        return code1 + code2 * 256;
     }
 }
