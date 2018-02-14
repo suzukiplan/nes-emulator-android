@@ -14,7 +14,7 @@ __IMPORTANT: Your Project's license must to GPLv3 or compatible if use it. (conf
 
 ```
 dependencies {
-    implementation 'com.suzukiplan:nes-emulator-android:1.2.2'
+    implementation 'com.suzukiplan:nes-emulator-android:1.2.3'
 }
 ```
 

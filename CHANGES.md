@@ -1,5 +1,10 @@
 # CHANGES
 
+## Version 1.2.3
+
+- added: `NESView#multipleTicks`
+- update test code
+
 ## Version 1.2.2
 
 - make null safe NESView methods
