@@ -41,11 +41,10 @@ dependencies {
     nesView?.load(romByteArray)
 
     // key calculator
-    val keyP1 = NESKey()
-    val keyP2 = NESKey()
+    val key = NESKey()
 
     // execute 1 frame
-    nesView?.tick(keyP1.code, keyP2.code)
+    nesView?.tick(key.code)
 ```
 
 > See the [example](test/src/main/java/com/suzukiplan/emulator/nes/test/MainActivity.kt)
