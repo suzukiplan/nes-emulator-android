@@ -18,6 +18,8 @@ dependencies {
 }
 ```
 
+> You can check the available version in the [jcenter](http://jcenter.bintray.com/com/suzukiplan/nes-emulator-android/)
+
 ### (2) layout.xml
 
 ```xml
