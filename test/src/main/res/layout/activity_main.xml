@@ -10,41 +10,189 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingBottom="12dp"
         android:paddingTop="12dp">
 
-        <com.suzukiplan.emulator.nes.test.PushableTextView
-            android:id="@+id/reset"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="4dp"
-            android:background="@drawable/shape_conrder_4dp_primary"
-            android:gravity="center"
-            android:padding="4dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:text="@string/reset"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14dp"
-            tools:ignore="ButtonStyle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <com.suzukiplan.emulator.nes.test.PushableTextView
-            android:id="@+id/capture"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="4dp"
-            android:background="@drawable/shape_conrder_4dp_primary"
-            android:gravity="center"
-            android:padding="4dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:text="@string/capture"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14dp"
-            tools:ignore="ButtonStyle" />
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/reset"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/reset"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/capture"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/capture"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x1"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x2"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x2"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x3"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x3"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x4"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x4"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x5"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x6"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x6"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x7"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x7"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+
+            <com.suzukiplan.emulator.nes.test.PushableTextView
+                android:id="@+id/x8"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_conrder_4dp_primary"
+                android:gravity="center"
+                android:padding="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/x8"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                tools:ignore="ButtonStyle" />
+        </LinearLayout>
     </LinearLayout>
 
     <com.suzukiplan.emulator.nes.core.NESView

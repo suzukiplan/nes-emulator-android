@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private var tickThread: Thread? = null
     private var active = false
     private val keyP1 = NESKey()
+    private var speed = 1
 
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,14 @@ class MainActivity : AppCompatActivity() {
             CaptureDialog().show(supportFragmentManager, captureBitmap)
         }
         findViewById<View>(R.id.reset).setOnClickListener { nesView?.reset() }
+        findViewById<View>(R.id.x1).setOnClickListener { speed = 1 }
+        findViewById<View>(R.id.x2).setOnClickListener { speed = 2 }
+        findViewById<View>(R.id.x3).setOnClickListener { speed = 3 }
+        findViewById<View>(R.id.x4).setOnClickListener { speed = 4 }
+        findViewById<View>(R.id.x5).setOnClickListener { speed = 5 }
+        findViewById<View>(R.id.x6).setOnClickListener { speed = 6 }
+        findViewById<View>(R.id.x7).setOnClickListener { speed = 7 }
+        findViewById<View>(R.id.x8).setOnClickListener { speed = 8 }
         findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> keyP1.up = pushing }
         findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> keyP1.down = pushing }
         findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> keyP1.left = pushing }
@@ -51,7 +60,15 @@ class MainActivity : AppCompatActivity() {
                 return@Thread
             }
             while (active) {
-                nesView?.tick(keyP1.code, 0)
+                val speed = this.speed
+                if (1 == speed) {
+                    nesView?.tick(keyP1.code, 0)
+                } else {
+                    val code = keyP1.code
+                    val codes1 = IntArray(speed, { _ -> code })
+                    val codes2 = IntArray(speed, { _ -> 0 })
+                    nesView?.ticks(codes1, codes2)
+                }
             }
         }
         tickThread?.start()
