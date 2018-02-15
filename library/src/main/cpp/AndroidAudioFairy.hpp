@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Cycloa/src/emulator/fairy/AudioFairy.h"
+#include "buffer-queue/src/BufferQueue.h"
 
 struct SL {
     SLObjectItf slEngObj;
@@ -28,6 +29,7 @@ public:
     int16_t skipBuffer[2048];
     bool buffered;
     int skip;
+    BufferQueue* captureQueue;
 
     void lock();
 
@@ -43,6 +45,41 @@ public:
 
     SLAndroidSimpleBufferQueueItf getBufferQueueItf() {
         return sl.slBufQ;
+    }
+
+    bool beginCapture() {
+        if (captureQueue) return false;
+        lock();
+        try {
+            captureQueue = new BufferQueue(16384);
+        } catch(...) {
+            captureQueue = NULL;
+        }
+        if (NULL == captureQueue) {
+            unlock();
+            return false;
+        }
+        unlock();
+        return true;
+    }
+
+    void* getCapture(size_t* size, size_t limit) {
+        if (!captureQueue) {
+            *size = 0;
+            return NULL;
+        }
+        void* result;
+        captureQueue->dequeue(&result, size, limit);
+        return result;
+    }
+
+    void endCapture() {
+        if (captureQueue) {
+            lock();
+            delete captureQueue;
+            captureQueue = NULL;
+            unlock();
+        }
     }
 
 private:

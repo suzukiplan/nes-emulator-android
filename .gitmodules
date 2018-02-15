@@ -1,3 +1,6 @@
 [submodule "library/src/main/cpp/Cycloa"]
 	path = library/src/main/cpp/Cycloa
 	url = https://github.com/ledyba/Cycloa
+[submodule "library/src/main/cpp/buffer-queue"]
+	path = library/src/main/cpp/buffer-queue
+	url = https://github.com/suzukiplan/buffer-queue.git
