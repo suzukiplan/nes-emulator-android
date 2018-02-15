@@ -5,9 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap vram = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565);
@@ -16,6 +21,12 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private Rect viewRect = null;
     private final Paint paint = new Paint();
     private Long context = null;
+    private OnCaptureAudioListener onCaptureAudioListener = null;
+    private Timer captureTimer = null;
+
+    public interface OnCaptureAudioListener {
+        void onCaptureAudio(byte[] pcm);
+    }
 
     public NESView(Context context) {
         super(context);
@@ -73,13 +84,14 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void destroy() {
         if (null != context) {
+            setOnCaptureAudioListener(null);
             Logger.d("destroy nes-view");
             Emulator.releaseContext(context);
             context = null;
         }
     }
 
-    public boolean load(byte[] rom) {
+    public boolean load(@Nullable byte[] rom) {
         if (null == context || null == rom) return false;
         Logger.d("loading rom: size=" + rom.length);
         return Emulator.loadRom(context, rom);
@@ -111,7 +123,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         holder.unlockCanvasAndPost(canvas);
     }
 
-    public void ticks(int[] keyCodes) {
+    public void ticks(@NonNull int[] keyCodes) {
         if (null == context) return;
         // nフレーム描画されるまでCPUを回す
         synchronized (locker) {
@@ -145,6 +157,38 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     public void capture(Canvas canvas, Rect rect) {
         synchronized (locker) {
             canvas.drawBitmap(vram, vramRect, rect, paint);
+        }
+    }
+
+    public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener) {
+        setOnCaptureAudioListener(listener, 200, null);
+    }
+
+    public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener, int interval, @Nullable Integer limit) {
+        if (null == context) return;
+        if (null != captureTimer) {
+            captureTimer.cancel();
+            captureTimer.purge();
+            captureTimer = null;
+        }
+        onCaptureAudioListener = listener;
+        if (null != listener) {
+            Logger.d("beginning capture audio");
+            Emulator.beginCaptureAudio(context);
+            final int limitSize = limit != null ? limit : (int) (interval / 1000.0 * 88200 * 2);
+            captureTimer = new Timer();
+            captureTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    byte[] result = Emulator.getCaptureAudio(context, limitSize);
+                    if (null != result) {
+                        onCaptureAudioListener.onCaptureAudio(result);
+                    }
+                }
+            }, 0, interval);
+        } else {
+            Logger.d("ending capture audio");
+            Emulator.endCaptureAudio(context);
         }
     }
 }
