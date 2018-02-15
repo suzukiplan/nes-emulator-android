@@ -3,6 +3,7 @@
 ## Version 1.3.1
 
 - execute first tick when first tick called
+- add audio capture interface
 
 ## Version 1.3.0 (destructive)
 
