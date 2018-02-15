@@ -26,17 +26,23 @@ public:
 
     int16_t buffer[4096];
     int16_t skipBuffer[2048];
-    char emptyBuffer[1024];
+    bool buffered;
     int skip;
 
     void lock();
 
     void unlock();
 
+    int startPlaying();
+
     static void callback(SLAndroidSimpleBufferQueueItf bq, void *c);
 
     bool isEnded() {
         return NULL == sl.slBufQ;
+    }
+
+    SLAndroidSimpleBufferQueueItf getBufferQueueItf() {
+        return sl.slBufQ;
     }
 
 private:

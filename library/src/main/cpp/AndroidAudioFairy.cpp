@@ -2,11 +2,11 @@
 
 AndroidAudioFairy::AndroidAudioFairy(int sampling, int bit, int channel) {
     pthread_mutex_init(&mutex, NULL);
-    memset(emptyBuffer, 0, sizeof(emptyBuffer));
     this->sampling = sampling;
     this->bit = bit;
     this->channel = (SLuint32) channel;
     skip = 0;
+    buffered = false;
     init_sl();
 }
 
@@ -169,7 +169,12 @@ int AndroidAudioFairy::init_sl2() {
         return -1;
     }
     res = (*sl.slPlayObj)->GetInterface(sl.slPlayObj, SL_IID_ANDROIDSIMPLEBUFFERQUEUE, &sl.slBufQ);
-    if (SL_RESULT_SUCCESS != res) {
+    return SL_RESULT_SUCCESS != res ? -1 : 0;
+}
+
+int AndroidAudioFairy::startPlaying() {
+    SLresult res;
+    if (!sl.slBufQ || !sl.slPlay) {
         return -1;
     }
     res = (*sl.slBufQ)->RegisterCallback(sl.slBufQ, callback, this);
@@ -177,14 +182,7 @@ int AndroidAudioFairy::init_sl2() {
         return -1;
     }
     res = (*sl.slPlay)->SetPlayState(sl.slPlay, SL_PLAYSTATE_PLAYING);
-    if (SL_RESULT_SUCCESS != res) {
-        return -1;
-    }
-    res = (*sl.slBufQ)->Enqueue(sl.slBufQ, emptyBuffer, sizeof(emptyBuffer));
-    if (SL_RESULT_SUCCESS != res) {
-        return -1;
-    }
-    return 0;
+    return SL_RESULT_SUCCESS != res ? -1 : 0;
 }
 
 void AndroidAudioFairy::lock() {

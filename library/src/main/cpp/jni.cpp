@@ -71,6 +71,13 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_loadRom(JNIEnv *env,
     return result;
 }
 
+inline void firstBuffering(Context *context) {
+    if (context->audio.buffered) return;
+    context->audio.startPlaying();
+    context->audio.callback(context->audio.getBufferQueueItf(), &context->audio);
+    context->audio.buffered = true;
+}
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
@@ -89,6 +96,7 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
         context->video.skip = false;
         while (!context->video.render) context->vm->run();
         context->audio.unlock();
+        firstBuffering(context);
 
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
@@ -133,6 +141,7 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_multipleTicks(JNIEnv *env,
         context->video.render = false;
         while (!context->video.render) context->vm->run();
         context->audio.unlock();
+        firstBuffering(context);
 
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
