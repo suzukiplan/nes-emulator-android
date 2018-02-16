@@ -7,6 +7,7 @@ AndroidAudioFairy::AndroidAudioFairy(int sampling, int bit, int channel) {
     this->channel = (SLuint32) channel;
     skip = 0;
     buffered = false;
+    captureQueue = NULL;
     init_sl();
 }
 
