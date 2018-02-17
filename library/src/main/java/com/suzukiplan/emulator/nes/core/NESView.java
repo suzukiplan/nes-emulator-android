@@ -166,6 +166,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener, int interval, @Nullable Integer limit) {
         if (null == context) return;
+        if (null == captureTimer && null == listener) return;
         if (null != captureTimer) {
             captureTimer.cancel();
             captureTimer.purge();

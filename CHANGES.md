@@ -3,6 +3,7 @@
 ## Version 1.4.0 (destructive)
 
 - changed the audio capture interface
+- close check on the setOnCaptureAudioListener
 
 ## Version 1.3.1
 
