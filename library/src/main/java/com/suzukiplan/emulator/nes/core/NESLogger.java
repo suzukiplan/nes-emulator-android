@@ -2,7 +2,7 @@ package com.suzukiplan.emulator.nes.core;
 
 import android.util.Log;
 
-public final class Logger {
+public final class NESLogger {
     private static final String TAG = "nes-view";
     public static boolean enabled = false;
 

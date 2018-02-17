@@ -73,7 +73,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void init() {
-        Logger.d("create nes-view");
+        NESLogger.d("create nes-view");
         getHolder().addCallback(this);
         context = Emulator.createContext();
         paint.setAntiAlias(false);
@@ -86,7 +86,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Logger.d("surface created");
+        NESLogger.d("surface created");
     }
 
     /**
@@ -99,7 +99,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-        Logger.d("surface changed: format=" + format + ", width=" + width + ", height=" + height);
+        NESLogger.d("surface changed: format=" + format + ", width=" + width + ", height=" + height);
         double xDiv = width / 256.0;
         double yDiv = height / 240.0;
         if (xDiv < yDiv) {
@@ -135,7 +135,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     public void destroy() {
         if (null != context) {
             setOnCaptureAudioListener(null);
-            Logger.d("destroy nes-view");
+            NESLogger.d("destroy nes-view");
             Emulator.releaseContext(context);
             context = null;
         }
@@ -149,7 +149,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
      */
     public boolean load(@Nullable byte[] rom) {
         if (null == context || null == rom) return false;
-        Logger.d("loading rom: size=" + rom.length);
+        NESLogger.d("loading rom: size=" + rom.length);
         return Emulator.loadRom(context, rom);
     }
 
@@ -167,17 +167,17 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
         if (null == holder) {
-            Logger.w("cannot get the holder");
+            NESLogger.w("cannot get the holder");
             return;
         }
         Canvas canvas = holder.lockCanvas();
         if (null == canvas) {
-            Logger.w("cannot lock the holder-canvas");
+            NESLogger.w("cannot lock the holder-canvas");
             return;
         }
         canvas.drawColor(0xff000000);
         if (null == viewRect) {
-            Logger.w("surface has not initialized");
+            NESLogger.w("surface has not initialized");
             return;
         }
         canvas.drawBitmap(vram, vramRect, viewRect, paint);
@@ -198,17 +198,17 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
         if (null == holder) {
-            Logger.w("cannot get the holder");
+            NESLogger.w("cannot get the holder");
             return;
         }
         Canvas canvas = holder.lockCanvas();
         if (null == canvas) {
-            Logger.w("cannot lock the holder-canvas");
+            NESLogger.w("cannot lock the holder-canvas");
             return;
         }
         canvas.drawColor(0xff000000);
         if (null == viewRect) {
-            Logger.w("surface has not initialized");
+            NESLogger.w("surface has not initialized");
             return;
         }
         canvas.drawBitmap(vram, vramRect, viewRect, paint);
@@ -261,7 +261,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         }
         onCaptureAudioListener = listener;
         if (null != listener) {
-            Logger.d("beginning capture audio");
+            NESLogger.d("beginning capture audio");
             Emulator.beginCaptureAudio(context);
             final int limitSize = limit != null ? limit : (int) (interval / 1000.0 * 88200 * 2);
             captureTimer = new Timer();
@@ -275,7 +275,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }, 0, interval);
         } else {
-            Logger.d("ending capture audio");
+            NESLogger.d("ending capture audio");
             Emulator.endCaptureAudio(context);
         }
     }

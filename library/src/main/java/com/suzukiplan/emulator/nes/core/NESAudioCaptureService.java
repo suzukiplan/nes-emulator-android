@@ -48,7 +48,7 @@ public class NESAudioCaptureService {
                     try {
                         outputStream.write(pcm);
                     } catch (IOException e) {
-                        Logger.printStackTrace(e);
+                        NESLogger.printStackTrace(e);
                     }
                 }
             }
@@ -66,7 +66,7 @@ public class NESAudioCaptureService {
             try {
                 outputStream.close();
             } catch (IOException e) {
-                Logger.printStackTrace(e);
+                NESLogger.printStackTrace(e);
             }
             outputStream = null;
         }
@@ -74,7 +74,7 @@ public class NESAudioCaptureService {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                Logger.printStackTrace(e);
+                NESLogger.printStackTrace(e);
             }
             inputStream = null;
         }

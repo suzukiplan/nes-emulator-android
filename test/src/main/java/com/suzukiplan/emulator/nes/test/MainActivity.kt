@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
-import com.suzukiplan.emulator.nes.core.Logger
 import com.suzukiplan.emulator.nes.core.NESKey
+import com.suzukiplan.emulator.nes.core.NESLogger
 import com.suzukiplan.emulator.nes.core.NESView
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Logger.enabled = true
+        NESLogger.enabled = true
 
         // key input procedure
         findViewById<View>(R.id.capture_video).setOnClickListener {
