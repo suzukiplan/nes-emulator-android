@@ -7,21 +7,21 @@ final class Emulator {
         System.loadLibrary("nes-core");
     }
 
-    public static native long createContext();
+    static native long createContext();
 
-    public static native void releaseContext(long contextId);
+    static native void releaseContext(long contextId);
 
-    public static native boolean loadRom(long contextId, byte[] rom);
+    static native boolean loadRom(long contextId, byte[] rom);
 
-    public static native void tick(long contextId, int key, Bitmap vram);
+    static native void tick(long contextId, int key, Bitmap vram);
 
-    public static native void multipleTicks(long contextId, int[] keys, Bitmap vram);
+    static native void multipleTicks(long contextId, int[] keys, Bitmap vram);
 
-    public static native void reset(long contextId);
+    static native void reset(long contextId);
 
-    public static native boolean beginCaptureAudio(long contextId);
+    static native boolean beginCaptureAudio(long contextId);
 
-    public static native byte[] getCaptureAudio(long contextId, int limit);
+    static native byte[] getCaptureAudio(long contextId, int limit);
 
-    public static native void endCaptureAudio(long contextId);
+    static native void endCaptureAudio(long contextId);
 }
