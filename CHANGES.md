@@ -1,5 +1,11 @@
 # CHANGES
 
+## Version 1.5.0 (destructive)
+
+- describe javadoc
+- renamed class: `Logger` -> `NESLogger`
+- added save/load state interface (NOTE: interface only)
+
 ## Version 1.4.0 (destructive)
 
 - changed the audio capture interface

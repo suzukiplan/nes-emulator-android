@@ -2,8 +2,12 @@ package com.suzukiplan.emulator.nes.core;
 
 import android.util.Log;
 
-public final class Logger {
+public final class NESLogger {
     private static final String TAG = "nes-view";
+
+    /**
+     * output logging flag (you can set true while debugging)
+     */
     public static boolean enabled = false;
 
     public static void d(String text) {

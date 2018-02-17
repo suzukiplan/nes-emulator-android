@@ -201,3 +201,23 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_endCaptureAudio(JNIEnv *env,
     Context *context = (Context *) ctx;
     context->audio.endCapture();
 }
+
+extern "C"
+JNIEXPORT jbyteArray JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_saveState(JNIEnv *env,
+                                                         jclass type,
+                                                         jlong contextId) {
+    return NULL; // TODO: support
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_loadState(JNIEnv *env,
+                                                         jclass type,
+                                                         jlong contextId,
+                                                         jbyteArray data_) {
+    jbyte *data = env->GetByteArrayElements(data_, NULL);
+    // TODO: support
+    env->ReleaseByteArrayElements(data_, data, 0);
+    return JNI_FALSE;
+}

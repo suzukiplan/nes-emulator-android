@@ -14,6 +14,9 @@ import android.view.SurfaceView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * NES emulator view
+ */
 public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap vram = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565);
     private final Rect vramRect = new Rect(0, 0, 256, 240);
@@ -24,40 +27,79 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private OnCaptureAudioListener onCaptureAudioListener = null;
     private Timer captureTimer = null;
 
+    /**
+     * interface for capture the audio
+     */
     public interface OnCaptureAudioListener {
+        /**
+         * fires when the audio data (pcm) was captured
+         *
+         * @param pcm audio data (44100Hz, 16bit, mono)
+         */
         void onCaptureAudio(byte[] pcm);
     }
 
+    /**
+     * create NESView
+     *
+     * @param context context
+     */
     public NESView(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * create NESView
+     *
+     * @param context context
+     * @param attrs   attribute set
+     */
     public NESView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * create NESView
+     *
+     * @param context      context
+     * @param attrs        attribute set
+     * @param defStyleAttr default style attribute
+     */
     public NESView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
-        Logger.d("create nes-view");
+        NESLogger.d("create nes-view");
         getHolder().addCallback(this);
         context = Emulator.createContext();
         paint.setAntiAlias(false);
     }
 
+    /**
+     * surface created
+     *
+     * @param surfaceHolder surface holder
+     */
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Logger.d("surface created");
+        NESLogger.d("surface created");
     }
 
+    /**
+     * surface changed
+     *
+     * @param surfaceHolder surface holder
+     * @param format        format
+     * @param width         width
+     * @param height        height
+     */
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-        Logger.d("surface changed: format=" + format + ", width=" + width + ", height=" + height);
+        NESLogger.d("surface changed: format=" + format + ", width=" + width + ", height=" + height);
         double xDiv = width / 256.0;
         double yDiv = height / 240.0;
         if (xDiv < yDiv) {
@@ -71,6 +113,11 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * surface destroyed
+     *
+     * @param surfaceHolder surface holder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         viewRect = null;
@@ -82,21 +129,35 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         super.onDetachedFromWindow();
     }
 
+    /**
+     * explicit destroy function (this function will called when detaching the NESView from the window)
+     */
     public void destroy() {
         if (null != context) {
             setOnCaptureAudioListener(null);
-            Logger.d("destroy nes-view");
+            NESLogger.d("destroy nes-view");
             Emulator.releaseContext(context);
             context = null;
         }
     }
 
+    /**
+     * load ROM file
+     *
+     * @param rom binary of the ROM file
+     * @return true = succeed, false = failed
+     */
     public boolean load(@Nullable byte[] rom) {
         if (null == context || null == rom) return false;
-        Logger.d("loading rom: size=" + rom.length);
+        NESLogger.d("loading rom: size=" + rom.length);
         return Emulator.loadRom(context, rom);
     }
 
+    /**
+     * execute 1 frame
+     *
+     * @param keyCode key code (you can calculate using NESKey)
+     */
     public void tick(int keyCode) {
         if (null == context) return;
         // 1フレーム描画されるまでCPUを回す
@@ -106,23 +167,28 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
         if (null == holder) {
-            Logger.w("cannot get the holder");
+            NESLogger.w("cannot get the holder");
             return;
         }
         Canvas canvas = holder.lockCanvas();
         if (null == canvas) {
-            Logger.w("cannot lock the holder-canvas");
+            NESLogger.w("cannot lock the holder-canvas");
             return;
         }
         canvas.drawColor(0xff000000);
         if (null == viewRect) {
-            Logger.w("surface has not initialized");
+            NESLogger.w("surface has not initialized");
             return;
         }
         canvas.drawBitmap(vram, vramRect, viewRect, paint);
         holder.unlockCanvasAndPost(canvas);
     }
 
+    /**
+     * execute multiple frames
+     *
+     * @param keyCodes key codes of the every frame
+     */
     public void ticks(@NonNull int[] keyCodes) {
         if (null == context) return;
         // nフレーム描画されるまでCPUを回す
@@ -132,38 +198,59 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         // vramの内容をアスペクト比を保った状態で拡大しつつ画面に描画
         SurfaceHolder holder = getHolder();
         if (null == holder) {
-            Logger.w("cannot get the holder");
+            NESLogger.w("cannot get the holder");
             return;
         }
         Canvas canvas = holder.lockCanvas();
         if (null == canvas) {
-            Logger.w("cannot lock the holder-canvas");
+            NESLogger.w("cannot lock the holder-canvas");
             return;
         }
         canvas.drawColor(0xff000000);
         if (null == viewRect) {
-            Logger.w("surface has not initialized");
+            NESLogger.w("surface has not initialized");
             return;
         }
         canvas.drawBitmap(vram, vramRect, viewRect, paint);
         holder.unlockCanvasAndPost(canvas);
     }
 
+    /**
+     * send H/W reset to the emulator
+     */
     public void reset() {
         if (null == context) return;
         Emulator.reset(context);
     }
 
+    /**
+     * capturing a video frame
+     *
+     * @param canvas canvas of the capturing video frame
+     * @param rect   draw position of the canvas (recommended aspect rate is 16:15 = width:height)
+     */
     public void capture(Canvas canvas, Rect rect) {
         synchronized (locker) {
             canvas.drawBitmap(vram, vramRect, rect, paint);
         }
     }
 
+    /**
+     * set the audio capture listener
+     *
+     * @param listener audio capture listener
+     */
     public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener) {
         setOnCaptureAudioListener(listener, 200, null);
     }
 
+    /**
+     * set the audio capture listener
+     *
+     * @param listener audio capture listener
+     * @param interval capturing interval
+     * @param limit    size of the limit (NOTE: recommended parameter is `null` because the C heap will increasing if the specified value was too small.)
+     */
     public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener, int interval, @Nullable Integer limit) {
         if (null == context) return;
         if (null == captureTimer && null == listener) return;
@@ -174,7 +261,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         }
         onCaptureAudioListener = listener;
         if (null != listener) {
-            Logger.d("beginning capture audio");
+            NESLogger.d("beginning capture audio");
             Emulator.beginCaptureAudio(context);
             final int limitSize = limit != null ? limit : (int) (interval / 1000.0 * 88200 * 2);
             captureTimer = new Timer();
@@ -188,8 +275,30 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }, 0, interval);
         } else {
-            Logger.d("ending capture audio");
+            NESLogger.d("ending capture audio");
             Emulator.endCaptureAudio(context);
         }
+    }
+
+    /**
+     * save state
+     *
+     * @return dump of the state data
+     */
+    @Nullable
+    public byte[] saveState() {
+        if (null == context) return null;
+        return Emulator.saveState(context);
+    }
+
+    /**
+     * load state
+     *
+     * @param stateData dump of the state data
+     * @return true = succeed, false = failed
+     */
+    public boolean loadState(@Nullable byte[] stateData) {
+        return null != context && null != stateData &&
+                Emulator.loadState(context, stateData);
     }
 }

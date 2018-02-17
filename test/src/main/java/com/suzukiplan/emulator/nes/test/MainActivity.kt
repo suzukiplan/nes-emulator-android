@@ -1,15 +1,14 @@
 package com.suzukiplan.emulator.nes.test
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Toast
-import com.suzukiplan.emulator.nes.core.Logger
 import com.suzukiplan.emulator.nes.core.NESKey
+import com.suzukiplan.emulator.nes.core.NESLogger
 import com.suzukiplan.emulator.nes.core.NESView
 
 class MainActivity : AppCompatActivity() {
@@ -18,14 +17,14 @@ class MainActivity : AppCompatActivity() {
     private var active = false
     private val key = NESKey()
     private var speed = 1
+    private var state: ByteArray? = null
 
-    @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Logger.enabled = true
+        NESLogger.enabled = true
 
-        // key input procedure
+        // debug functions
         findViewById<View>(R.id.capture_video).setOnClickListener {
             val captureBitmap = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565)
             val captureCanvas = Canvas(captureBitmap)
@@ -33,7 +32,9 @@ class MainActivity : AppCompatActivity() {
             nesView?.capture(captureCanvas, rect)
             CaptureVideoDialog().show(supportFragmentManager, captureBitmap)
         }
-        findViewById<View>(R.id.capture_audio).setOnClickListener { CaptureAudioDialog().show(supportFragmentManager, nesView) }
+        findViewById<View>(R.id.capture_audio).setOnClickListener {
+            CaptureAudioDialog().show(supportFragmentManager, nesView)
+        }
         findViewById<View>(R.id.reset).setOnClickListener { nesView?.reset() }
         findViewById<View>(R.id.x1).setOnClickListener { speed = 1 }
         findViewById<View>(R.id.x2).setOnClickListener { speed = 2 }
@@ -43,6 +44,15 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.x6).setOnClickListener { speed = 6 }
         findViewById<View>(R.id.x7).setOnClickListener { speed = 7 }
         findViewById<View>(R.id.x8).setOnClickListener { speed = 8 }
+        findViewById<View>(R.id.save_state).setOnClickListener {
+            state = nesView?.saveState()
+            if (null == state) error("Failed saving")
+        }
+        findViewById<View>(R.id.load_state).setOnClickListener {
+            if (true != nesView?.loadState(state)) error("Failed loading")
+        }
+
+        // input of virtual pad
         findViewById<PushableTextView>(R.id.up).onPushChanged = { pushing -> key.player1.up = pushing }
         findViewById<PushableTextView>(R.id.down).onPushChanged = { pushing -> key.player1.down = pushing }
         findViewById<PushableTextView>(R.id.left).onPushChanged = { pushing -> key.player1.left = pushing }
@@ -57,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         active = true
         tickThread = Thread {
             if (true != nesView?.load(readAsset("snow-demo-by-tennessee-carmel-veilleux-pd.nes"))) {
-                runOnUiThread { Toast.makeText(this, "Load failed!", Toast.LENGTH_LONG) }
+                error("Failed loading ROM")
                 return@Thread
             }
             while (active) {
@@ -72,6 +82,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         tickThread?.start()
+    }
+
+    private fun error(message: String, done: (() -> Unit)? = null) {
+        runOnUiThread {
+            AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage(message)
+                    .setOnDismissListener { done?.invoke() }
+                    .create()
+                    .show()
+        }
     }
 
     private fun readAsset(path: String): ByteArray {

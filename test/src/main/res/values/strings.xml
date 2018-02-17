@@ -21,4 +21,6 @@
     <string name="x6">x6</string>
     <string name="x7">x7</string>
     <string name="x8">x8</string>
+    <string name="save_state">SAVE STATE</string>
+    <string name="load_state">LOAD STATE</string>
 </resources>
