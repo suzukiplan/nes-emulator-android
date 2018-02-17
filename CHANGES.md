@@ -1,5 +1,11 @@
 # CHANGES
 
+## Version 1.4.0 (destructive)
+
+- changed the audio capture interface
+- added an audio capture service for reading from InputStream
+- close check on the setOnCaptureAudioListener
+
 ## Version 1.3.1
 
 - execute first enqueue when the first tick called
