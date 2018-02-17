@@ -1,5 +1,8 @@
 package com.suzukiplan.emulator.nes.core;
 
+/**
+ * key code calculator
+ */
 public class NESKey {
     private static final int MASK_A = 1;
     private static final int MASK_B = 2;
@@ -9,20 +12,55 @@ public class NESKey {
     private static final int MASK_DOWN = 32;
     private static final int MASK_LEFT = 64;
     private static final int MASK_RIGHT = 128;
+    /**
+     * key data of the player 1
+     */
     public final Player player1 = new Player();
+    /**
+     * key data of the player 2
+     */
     public final Player player2 = new Player();
 
     public static class Player {
+        /**
+         * up button
+         */
         public boolean up = false;
+        /**
+         * down button
+         */
         public boolean down = false;
+        /**
+         * left button
+         */
         public boolean left = false;
+        /**
+         * right button
+         */
         public boolean right = false;
+        /**
+         * A button
+         */
         public boolean a = false;
+        /**
+         * B button
+         */
         public boolean b = false;
+        /**
+         * select button
+         */
         public boolean select = false;
+        /**
+         * start button
+         */
         public boolean start = false;
     }
 
+    /**
+     * get the key code for `NESView#tick` or `NESView#ticks`
+     *
+     * @return key code
+     */
     public int getCode() {
         int code1 = player1.up ? MASK_UP : 0;
         code1 += player1.down ? MASK_DOWN : 0;

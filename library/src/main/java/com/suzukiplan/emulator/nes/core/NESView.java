@@ -14,6 +14,9 @@ import android.view.SurfaceView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * NES emulator view
+ */
 public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap vram = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565);
     private final Rect vramRect = new Rect(0, 0, 256, 240);
@@ -24,20 +27,46 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private OnCaptureAudioListener onCaptureAudioListener = null;
     private Timer captureTimer = null;
 
+    /**
+     * interface for capture the audio
+     */
     public interface OnCaptureAudioListener {
+        /**
+         * fires when the audio data (pcm) was captured
+         *
+         * @param pcm audio data (44100Hz, 16bit, mono)
+         */
         void onCaptureAudio(byte[] pcm);
     }
 
+    /**
+     * create NESView
+     *
+     * @param context context
+     */
     public NESView(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * create NESView
+     *
+     * @param context context
+     * @param attrs   attribute set
+     */
     public NESView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * create NESView
+     *
+     * @param context      context
+     * @param attrs        attribute set
+     * @param defStyleAttr default style attribute
+     */
     public NESView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
@@ -50,11 +79,24 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setAntiAlias(false);
     }
 
+    /**
+     * surface created
+     *
+     * @param surfaceHolder surface holder
+     */
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Logger.d("surface created");
     }
 
+    /**
+     * surface changed
+     *
+     * @param surfaceHolder surface holder
+     * @param format        format
+     * @param width         width
+     * @param height        height
+     */
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         Logger.d("surface changed: format=" + format + ", width=" + width + ", height=" + height);
@@ -71,6 +113,11 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * surface destroyed
+     *
+     * @param surfaceHolder surface holder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         viewRect = null;
@@ -82,6 +129,9 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         super.onDetachedFromWindow();
     }
 
+    /**
+     * explicit destroy function (this function will called when detaching the NESView from the window)
+     */
     public void destroy() {
         if (null != context) {
             setOnCaptureAudioListener(null);
@@ -91,12 +141,23 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * load ROM file
+     *
+     * @param rom binary of the ROM file
+     * @return true = succeed, false = failed
+     */
     public boolean load(@Nullable byte[] rom) {
         if (null == context || null == rom) return false;
         Logger.d("loading rom: size=" + rom.length);
         return Emulator.loadRom(context, rom);
     }
 
+    /**
+     * execute 1 frame
+     *
+     * @param keyCode key code (you can calculate using NESKey)
+     */
     public void tick(int keyCode) {
         if (null == context) return;
         // 1フレーム描画されるまでCPUを回す
@@ -123,6 +184,11 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         holder.unlockCanvasAndPost(canvas);
     }
 
+    /**
+     * execute multiple frames
+     *
+     * @param keyCodes key codes of the every frame
+     */
     public void ticks(@NonNull int[] keyCodes) {
         if (null == context) return;
         // nフレーム描画されるまでCPUを回す
@@ -149,21 +215,42 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
         holder.unlockCanvasAndPost(canvas);
     }
 
+    /**
+     * send H/W reset to the emulator
+     */
     public void reset() {
         if (null == context) return;
         Emulator.reset(context);
     }
 
+    /**
+     * capturing a video frame
+     *
+     * @param canvas canvas of the capturing video frame
+     * @param rect   draw position of the canvas (recommended aspect rate is 16:15 = width:height)
+     */
     public void capture(Canvas canvas, Rect rect) {
         synchronized (locker) {
             canvas.drawBitmap(vram, vramRect, rect, paint);
         }
     }
 
+    /**
+     * set the audio capture listener
+     *
+     * @param listener audio capture listener
+     */
     public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener) {
         setOnCaptureAudioListener(listener, 200, null);
     }
 
+    /**
+     * set the audio capture listener
+     *
+     * @param listener audio capture listener
+     * @param interval capturing interval
+     * @param limit    size of the limit (NOTE: recommended parameter is `null` because the C heap will increasing if the specified value was too small.)
+     */
     public void setOnCaptureAudioListener(@Nullable OnCaptureAudioListener listener, int interval, @Nullable Integer limit) {
         if (null == context) return;
         if (null == captureTimer && null == listener) return;
