@@ -26,13 +26,14 @@ class MainActivity : AppCompatActivity() {
         Logger.enabled = true
 
         // key input procedure
-        findViewById<View>(R.id.capture).setOnClickListener {
+        findViewById<View>(R.id.capture_video).setOnClickListener {
             val captureBitmap = Bitmap.createBitmap(256, 240, Bitmap.Config.RGB_565)
             val captureCanvas = Canvas(captureBitmap)
             val rect = Rect(0, 0, 256, 240)
             nesView?.capture(captureCanvas, rect)
             CaptureVideoDialog().show(supportFragmentManager, captureBitmap)
         }
+        findViewById<View>(R.id.capture_audio).setOnClickListener { CaptureAudioDialog().show(supportFragmentManager, nesView) }
         findViewById<View>(R.id.reset).setOnClickListener { nesView?.reset() }
         findViewById<View>(R.id.x1).setOnClickListener { speed = 1 }
         findViewById<View>(R.id.x2).setOnClickListener { speed = 2 }

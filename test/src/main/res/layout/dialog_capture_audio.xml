@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/audio_capture" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#000000">
+
+        <SurfaceView
+            android:id="@+id/capture_preview"
+            android:layout_width="256dp"
+            android:layout_height="240dp"
+            android:layout_margin="4dp" />
+
+        <View
+            android:layout_width="256dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="4dp"
+            android:background="#00ffff" />
+    </RelativeLayout>
+</LinearLayout>
