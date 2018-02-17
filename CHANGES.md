@@ -4,6 +4,7 @@
 
 - describe javadoc
 - renamed class: `Logger` -> `NESLogger`
+- added save/load state interface (NOTE: interface only)
 
 ## Version 1.4.0 (destructive)
 
