@@ -6,24 +6,22 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.view.*
+import com.suzukiplan.emulator.nes.core.NESAudioCaptureService
 import com.suzukiplan.emulator.nes.core.NESView
 import java.nio.ByteBuffer
 
-class CaptureAudioDialog : DialogFragment(), SurfaceHolder.Callback, NESView.OnCaptureAudioListener {
-    private var preview: SurfaceView? = null
+class CaptureAudioDialog : DialogFragment(), SurfaceHolder.Callback, Runnable {
     private var nesView: NESView? = null
-    private var x = 0f
-    private var y = 0f
+    private var preview: SurfaceView? = null
+    private var thread: Thread? = null
     private var limitX = 0f
     private var heightCenter = 0f
     private var heightWeight = 0f
-    private val paint = Paint()
+    private var alive = false
 
     fun show(manager: FragmentManager, nesView: NESView?) {
         this.nesView = nesView
         isCancelable = true
-        paint.color = Color.GREEN
-        paint.strokeWidth = 4.0f
         show(manager, tag)
     }
 
@@ -31,7 +29,6 @@ class CaptureAudioDialog : DialogFragment(), SurfaceHolder.Callback, NESView.OnC
         val view = inflater?.inflate(R.layout.dialog_capture_audio, container)
         preview = view?.findViewById(R.id.capture_preview)
         preview?.holder?.addCallback(this)
-        nesView?.setOnCaptureAudioListener(this)
         return view
     }
 
@@ -40,37 +37,60 @@ class CaptureAudioDialog : DialogFragment(), SurfaceHolder.Callback, NESView.OnC
         super.onDestroyView()
     }
 
-    //    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-        x = 0f
-        y = height / 2f
-        heightWeight = y / 0x8000
-        heightCenter = y
+        heightWeight = height.toFloat() / 0x8000
+        heightCenter = height / 2f
         limitX = width.toFloat()
+        alive = true
+        thread = Thread(this)
+        thread?.start()
     }
 
     override fun surfaceDestroyed(p0: SurfaceHolder?) {
+        alive = false
+        thread?.join()
+        thread = null
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
     }
 
-    override fun onCaptureAudio(pcm: ByteArray?) {
-        val buffer = ByteBuffer.wrap(pcm)?.asShortBuffer() ?: return
+    override fun run() {
         val holder = preview?.holder ?: return
-        val canvas = holder.lockCanvas() ?: return
-        for (index in 0 until buffer.limit()) {
-            val pos = buffer[index]
-            val px = x
-            x++
-            if (limitX <= x) {
-                nesView?.setOnCaptureAudioListener(null)
-                break
-            }
-            val py = y
-            y = pos * heightWeight + heightCenter
-            canvas.drawLine(px, py, x, y, paint)
+
+        // read capture loop
+        val capture = NESAudioCaptureService(nesView, 100)
+        val input = capture.open() ?: return
+        val raw = ByteArray((limitX * 2).toInt())
+        var leftSize = raw.size
+        while (alive && 0 < leftSize) {
+            val readSize = input.read(raw, raw.size - leftSize, leftSize)
+            leftSize -= readSize
         }
-        holder.unlockCanvasAndPost(canvas)
+        capture.close()
+
+        // write capture graph
+        if (alive) {
+            val canvas = holder.lockCanvas() ?: return
+            val paint = Paint()
+            paint.color = Color.GREEN
+            paint.strokeWidth = 4.0f
+            val buffer = ByteBuffer.wrap(raw, 0, raw.size).asShortBuffer()
+            var x = 0f
+            var y = heightCenter
+            for (index in 0 until buffer.limit()) {
+                val pos = buffer[index]
+                val px = x
+                x++
+                if (limitX <= x) {
+                    alive = false
+                    break
+                }
+                val py = y
+                y = pos * heightWeight + heightCenter
+                canvas.drawLine(px, py, x, y, paint)
+            }
+            holder.unlockCanvasAndPost(canvas)
+        }
     }
 }

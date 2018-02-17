@@ -27,6 +27,6 @@
             android:layout_height="1dp"
             android:layout_centerVertical="true"
             android:layout_margin="4dp"
-            android:background="#00ffff" />
+            android:background="#1000ffff" />
     </RelativeLayout>
 </LinearLayout>
