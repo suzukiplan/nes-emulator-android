@@ -9,8 +9,10 @@
     <string name="down">DOWN</string>
     <string name="up">UP</string>
     <string name="reset">RESET</string>
-    <string name="capture">CAPTURE</string>
+    <string name="capture_video">CAP:VIDEO</string>
     <string name="screen_capture">Screen capture</string>
+    <string name="capture_audio">CAP:AUDIO</string>
+    <string name="audio_capture">Audio capture</string>
     <string name="x1">x1</string>
     <string name="x2">x2</string>
     <string name="x3">x3</string>

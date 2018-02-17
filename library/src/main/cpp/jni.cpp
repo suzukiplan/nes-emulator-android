@@ -71,6 +71,13 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_loadRom(JNIEnv *env,
     return result;
 }
 
+inline void firstBuffering(Context *context) {
+    if (context->audio.buffered) return;
+    context->audio.startPlaying();
+    context->audio.callback(context->audio.getBufferQueueItf(), &context->audio);
+    context->audio.buffered = true;
+}
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
@@ -89,6 +96,7 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_tick(JNIEnv *env,
         context->video.skip = false;
         while (!context->video.render) context->vm->run();
         context->audio.unlock();
+        firstBuffering(context);
 
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
@@ -133,6 +141,7 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_multipleTicks(JNIEnv *env,
         context->video.render = false;
         while (!context->video.render) context->vm->run();
         context->audio.unlock();
+        firstBuffering(context);
 
         void *pixels;
         if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
@@ -155,4 +164,40 @@ Java_com_suzukiplan_emulator_nes_core_Emulator_reset(JNIEnv *env,
                                                      jlong ctx) {
     Context *context = (Context *) ctx;
     context->vm->sendHardReset();
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_beginCaptureAudio(JNIEnv *env,
+                                                                 jclass type,
+                                                                 jlong ctx) {
+    Context *context = (Context *) ctx;
+    return (jboolean) (context->audio.beginCapture() ? JNI_TRUE : JNI_FALSE);
+}
+
+extern "C"
+JNIEXPORT jbyteArray JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_getCaptureAudio(JNIEnv *env,
+                                                               jclass type,
+                                                               jlong ctx,
+                                                               jint limit) {
+    Context *context = (Context *) ctx;
+    void *buffer;
+    size_t size;
+    buffer = context->audio.getCapture(&size, (size_t) limit);
+    if (NULL == buffer || size < 1) return NULL;
+    jbyteArray result = env->NewByteArray((jsize) size);
+    jbyte *bin = env->GetByteArrayElements(result, 0);
+    memcpy(bin, buffer, size);
+    env->ReleaseByteArrayElements(result, bin, 0);
+    return result;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_suzukiplan_emulator_nes_core_Emulator_endCaptureAudio(JNIEnv *env,
+                                                               jclass type,
+                                                               jlong ctx) {
+    Context *context = (Context *) ctx;
+    context->audio.endCapture();
 }

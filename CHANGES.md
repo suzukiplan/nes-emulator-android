@@ -1,5 +1,10 @@
 # CHANGES
 
+## Version 1.3.1
+
+- execute first enqueue when the first tick called
+- add audio capture interface
+
 ## Version 1.3.0 (destructive)
 
 - changed the specification of key code

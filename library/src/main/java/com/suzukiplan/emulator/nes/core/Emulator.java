@@ -18,4 +18,10 @@ final class Emulator {
     public static native void multipleTicks(long contextId, int[] keys, Bitmap vram);
 
     public static native void reset(long contextId);
+
+    public static native boolean beginCaptureAudio(long contextId);
+
+    public static native byte[] getCaptureAudio(long contextId, int limit);
+
+    public static native void endCaptureAudio(long contextId);
 }
