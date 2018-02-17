@@ -24,4 +24,8 @@ final class Emulator {
     static native byte[] getCaptureAudio(long contextId, int limit);
 
     static native void endCaptureAudio(long contextId);
+
+    static native byte[] saveState(long contextId);
+
+    static native boolean loadState(long contextId, byte[] data);
 }

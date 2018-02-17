@@ -279,4 +279,26 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
             Emulator.endCaptureAudio(context);
         }
     }
+
+    /**
+     * save state
+     *
+     * @return dump of the state data
+     */
+    @Nullable
+    public byte[] saveState() {
+        if (null == context) return null;
+        return Emulator.saveState(context);
+    }
+
+    /**
+     * load state
+     *
+     * @param stateData dump of the state data
+     * @return true = succeed, false = failed
+     */
+    public boolean loadState(@Nullable byte[] stateData) {
+        return null != context && null != stateData &&
+                Emulator.loadState(context, stateData);
+    }
 }
