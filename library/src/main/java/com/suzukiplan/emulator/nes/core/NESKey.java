@@ -21,6 +21,9 @@ public class NESKey {
      */
     public final Player player2 = new Player();
 
+    /**
+     * player key status
+     */
     public static class Player {
         /**
          * up button
