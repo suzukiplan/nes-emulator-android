@@ -1,5 +1,9 @@
 # CHANGES
 
+## Version 1.4.0 (destructive)
+
+- changed the audio capture interface
+
 ## Version 1.3.1
 
 - execute first enqueue when the first tick called

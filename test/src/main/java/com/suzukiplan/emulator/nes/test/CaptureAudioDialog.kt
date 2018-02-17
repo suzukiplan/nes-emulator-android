@@ -55,8 +55,8 @@ class CaptureAudioDialog : DialogFragment(), SurfaceHolder.Callback, NESView.OnC
     override fun surfaceCreated(holder: SurfaceHolder?) {
     }
 
-    override fun onCaptureAudio(pcm: ByteBuffer?) {
-        val buffer = pcm?.asShortBuffer()?.asReadOnlyBuffer() ?: return
+    override fun onCaptureAudio(pcm: ByteArray?) {
+        val buffer = ByteBuffer.wrap(pcm)?.asShortBuffer() ?: return
         val holder = preview?.holder ?: return
         val canvas = holder.lockCanvas() ?: return
         for (index in 0 until buffer.limit()) {

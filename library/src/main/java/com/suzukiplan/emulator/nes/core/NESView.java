@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.nio.ByteBuffer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,7 +25,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
     private Timer captureTimer = null;
 
     public interface OnCaptureAudioListener {
-        void onCaptureAudio(ByteBuffer pcm);
+        void onCaptureAudio(byte[] pcm);
     }
 
     public NESView(Context context) {
@@ -183,7 +182,7 @@ public class NESView extends SurfaceView implements SurfaceHolder.Callback {
                 public void run() {
                     byte[] result = Emulator.getCaptureAudio(context, limitSize);
                     if (null != result) {
-                        onCaptureAudioListener.onCaptureAudio(ByteBuffer.wrap(result));
+                        onCaptureAudioListener.onCaptureAudio(result);
                     }
                 }
             }, 0, interval);
