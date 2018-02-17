@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             val captureCanvas = Canvas(captureBitmap)
             val rect = Rect(0, 0, 256, 240)
             nesView?.capture(captureCanvas, rect)
-            CaptureDialog().show(supportFragmentManager, captureBitmap)
+            CaptureVideoDialog().show(supportFragmentManager, captureBitmap)
         }
         findViewById<View>(R.id.reset).setOnClickListener { nesView?.reset() }
         findViewById<View>(R.id.x1).setOnClickListener { speed = 1 }
