@@ -1,4 +1,4 @@
-# NES Emulator for Android using Cycloa
+# NES Emulator for Android
 
 ## About
 
