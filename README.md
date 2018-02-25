@@ -35,16 +35,16 @@ dependencies {
 
 ```kotlin
     // find view
-    val nesView = findViewById(R.id.nes_view)
+    val nesView:NESView = findViewById(R.id.nes_view)
 
     // load rom
-    nesView?.load(romByteArray)
+    nesView.load(romByteArray)
 
     // key calculator
     val key = NESKey()
 
     // execute 1 frame
-    nesView?.tick(key.code)
+    nesView.tick(key.code)
 ```
 
 > See the [example](test/src/main/java/com/suzukiplan/emulator/nes/test/MainActivity.kt)
