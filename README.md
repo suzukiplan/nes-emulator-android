@@ -6,6 +6,15 @@ The NES emulator implementation for Android using [Cycloa](https://github.com/le
 
 ![screenshot](screen-shot.png)
 
+## Features
+
+- [x] Basic NES emulator functions (load and execute)
+- [x] Capture video image
+- [x] Capture audio
+- [x] Skip
+- [ ] Save state
+- [ ] Load state
+
 ## How to use on Your Project
 
 __IMPORTANT: Your Project's license must to GPLv3 or compatible if use it. (confirm the LICENSE section)__
