@@ -71,3 +71,4 @@ then you can build with choose `test` module.
 - Cycloa: [GPLv3](https://github.com/ledyba/Cycloa)
 - Example ROM - `Snow Demo by Tennessee Carmel-Veilleux`: Public Domain	 
 
+> __NOTE:__ The liberal license of `NES Emulator for iOS` without Cycloa edition is exist but not open. Please contact SUZUKI PLAN directly about it.
