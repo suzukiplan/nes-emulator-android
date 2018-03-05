@@ -83,4 +83,28 @@ public class NESKey {
         code2 += player2.start ? MASK_START : 0;
         return code1 + code2 * 256;
     }
+
+    /**
+     * set the key code for `NESView#tick` or `NESView#ticks`
+     */
+    public void setCode(int code) {
+        int code1 = code & 0xff;
+        int code2 = (code & 0x00ff) >> 8;
+        player1.up = 0 != (code1 & MASK_UP);
+        player1.down = 0 != (code1 & MASK_DOWN);
+        player1.left = 0 != (code1 & MASK_LEFT);
+        player1.right = 0 != (code1 & MASK_RIGHT);
+        player1.a = 0 != (code1 & MASK_A);
+        player1.b = 0 != (code1 & MASK_B);
+        player1.select = 0 != (code1 & MASK_SELECT);
+        player1.start = 0 != (code1 & MASK_START);
+        player2.up = 0 != (code2 & MASK_UP);
+        player2.down = 0 != (code2 & MASK_DOWN);
+        player2.left = 0 != (code2 & MASK_LEFT);
+        player2.right = 0 != (code2 & MASK_RIGHT);
+        player2.a = 0 != (code2 & MASK_A);
+        player2.b = 0 != (code2 & MASK_B);
+        player2.select = 0 != (code2 & MASK_SELECT);
+        player2.start = 0 != (code2 & MASK_START);
+    }
 }

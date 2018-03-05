@@ -1,5 +1,9 @@
 # CHANGES
 
+## Version 1.5.1
+
+- added a method: `NESKey#setCode`
+
 ## Version 1.5.0 (destructive)
 
 - describe javadoc
